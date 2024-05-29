@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('id');
+
+            if (userId) {
+                fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+                    .then(response => response.json())
+                    .then(user => {
+                        const userDetails = document.getElementById('userDetails');
+                        userDetails.innerHTML = `
+                            <p><strong>ID:</strong> ${user.id}</p>
+                            <p><strong>Name:</strong> ${user.name}</p>
+                            <p><strong>Username:</strong> ${user.username}</p>
+                            <p><strong>Email:</strong> ${user.email}</p>
+                            <p><strong>Address:</strong> ${user.address.street}, ${user.address.suite}, ${user.address.city}, ${user.address.zipcode}</p>
+                            <p><strong>Geo:</strong> lat: ${user.address.geo.lat}, lng: ${user.address.geo.lng}</p>
+                            <p><strong>Phone:</strong> ${user.phone}</p>
+                            <p><strong>Website:</strong> ${user.website}</p>
+                            <p><strong>Company:</strong> ${user.company.name}</p>
+                            <p><strong>Company Catch Phrase:</strong> ${user.company.catchPhrase}</p>
+                            <p><strong>Company BS:</strong> ${user.company.bs}</p>
+                        `;
+                    })
+                    .catch(error => console.error('Error fetching user details:', error));
+            } else {
+                document.getElementById('userDetails').textContent = 'No user ID provided.';
+            }
+        });
+    </script>
+</head>
+<body>
+<h1>User Details</h1>
+<div id="userDetails"></div>
+</body>
+</html>
